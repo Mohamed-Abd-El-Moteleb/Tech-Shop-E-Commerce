@@ -34,16 +34,8 @@ Tech-Shop is a full-featured e-commerce web application built with **ASP.NET Cor
 - **Bootstrap 5**, jQuery, AJAX for UI & interactivity
 
 ---
-
-## 🖥️ Run Locally
-
-1. **Clone the repository**
-
-```bash
-git clone https://github.com/Mohamed-Abd-El-Moteleb/Tech-Shop.git
-
----
-📁 Project Structure
+📁 **Project Structure**
+```
 Shop/
 ├── Areas/
 │   ├── Admin/
@@ -56,7 +48,16 @@ Shop/
 ├── Views/
 ├── wwwroot/
 └── Program.cs
+```
 
+
+## 🖥️ Run Locally
+
+**Clone the repository**
+
+```bash
+git clone https://github.com/Mohamed-Abd-El-Moteleb/Tech-Shop.git
+```
 ---
 
 ## 🚀 Getting Started
@@ -65,42 +66,51 @@ Shop/
 
 In `appsettings.json`:
 
-For local SQL Server:
+``For local SQL Server:``
 ```json
 "ConnectionStrings": {
   "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=Shop;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True"
 }
-
-💾 Apply Migrations (for local development)
-
+```
+💾 **Apply Migrations** (for local development)
+```
 Update-Database
-
-🔐 Admin Access
+```
+🔐 **Admin Access**
+```
 Auto-seeded by DbSeeder.cs:
 
 Email: Midoshaaban95@gmail.com
-
 Password: Admin123##
+```
 
-💳 Stripe Integration
+💳 **Stripe Integration**
+`
 Stripe is integrated using Stripe.NET SDK.
-
+`
 Add to appsettings.json:
-
+```
 "Stripe": {
   "SecretKey": "your_secret_key",
   "PublishableKey": "your_publishable_key"
 }
+```
 
 Use test card:
+````
 4242 4242 4242 4242
 Exp: 12/34 | CVC: 123
+````
 
-👨‍💻 Developed By
+
+
+
+👨‍💻 ***Developed By***
 
 Mohamed Shaban
+
 📧 Mohammed.shabaan.099@gmail.com
-📧 [Mohammed.shabaan.099@gmail.com](mailto:Mohammed.shabaan.099@gmail.com)  
+
 📍 Egypt
 
 
