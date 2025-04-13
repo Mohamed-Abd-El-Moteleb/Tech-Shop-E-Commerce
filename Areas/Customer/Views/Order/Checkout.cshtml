@@ -1,0 +1,126 @@
+﻿@model Shop.Models.Order
+@using Microsoft.AspNetCore.Identity
+@using Shop.Models
+@using Shop.Utility
+@inject IHttpContextAccessor HttpContextAccessor
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var hasPhone = !string.IsNullOrWhiteSpace(user?.PhoneNumber);
+}
+@{
+    var Products = HttpContextAccessor.HttpContext.Session.Get<List<Product>>("Products") ?? new List<Product>();
+    ViewData["Title"] = "Checkout";
+    var total = Products.Sum(p => p.Price);
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-4 text-primary">🧾 Checkout</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Order Information</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Checkout" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="PhoneNo" class="form-control" id="phoneInput" disabled />
+                            <label asp-for="PhoneNo"></label>
+                            <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="Address" class="form-control" id="addressInput" disabled />
+                            <label asp-for="Address"></label>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="button" class="btn btn-outline-primary" id="editAddressBtn">
+                                ✏️ Edit Address or Phone
+                            </button>
+                        </div>
+
+                        <div class="d-grid mt-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fa fa-check-circle me-1"></i> Confirm Order
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">🛒 Your Cart</h4>
+                </div>
+                <div class="card-body">
+                    @if (!Products.Any())
+                    {
+                        <div class="alert alert-warning text-center">
+                            Your cart is empty.
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 80px;">Image</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Products)
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="data:image/*;base64,@(Convert.ToBase64String(item.Image))"
+                                                 alt="@item.Name"
+                                                 class="img-fluid"
+                                                 style="max-height: 80px; object-fit: contain;" />
+                                        </td>
+                                        <td>@item.Name</td>
+                                        <td>$@item.Price.ToString("0.00")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-end"><strong>Total:</strong></td>
+                                    <td><strong>$@total.ToString("0.00")</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary">
+            ← Back to Products
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("editAddressBtn").addEventListener("click", () => {
+            document.getElementById("addressInput").removeAttribute("disabled");
+            document.getElementById("phoneInput").removeAttribute("disabled");
+        });
+    </script>
+}
+

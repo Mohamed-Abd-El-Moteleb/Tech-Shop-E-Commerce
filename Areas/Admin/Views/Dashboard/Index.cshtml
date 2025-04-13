@@ -1,0 +1,34 @@
+﻿@model Shop.Areas.Admin.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="text-primary mb-4">📊 Admin Dashboard</h2>
+
+<div class="row text-center">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Orders</h5>
+                <h2 class="card-text">@Model.TotalOrders</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Customers</h5>
+                <h2 class="card-text">@Model.TotalCustomers</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-warning text-white shadow-sm mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Revenue</h5>
+                <h2 class="card-text">$@Model.TotalRevenue.ToString("N2")</h2>
+            </div>
+        </div>
+    </div>
+</div>

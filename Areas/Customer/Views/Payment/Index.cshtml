@@ -1,0 +1,27 @@
+﻿@using Shop.ViewModels.Stripe
+@model StripePaymentViewModel
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-success">💳 Payment</h2>
+
+    <div class="card shadow p-4 mt-4">
+        <h4 class="text-primary">Total Amount: <strong>$@Model.Amount</strong></h4>
+        <br />
+
+        <form asp-action="CreateCheckoutSession" method="post">
+            <input type="hidden" name="Amount" value="@Model.Amount" />
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Pay</button>
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">← Back to Home</a>
+        </div>
+    </div>
+</div>
+

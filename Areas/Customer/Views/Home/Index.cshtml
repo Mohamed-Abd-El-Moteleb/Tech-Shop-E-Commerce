@@ -1,0 +1,46 @@
+﻿@model X.PagedList.IPagedList<Shop.Models.Product>
+@using X.PagedList.Mvc.Core
+@{
+	ViewData["Title"] = "Products";
+}
+
+<div class="container d-flex justify-content-center my-4">
+	<h2 class="text-info fw-bold">Our Products</h2>
+</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+	@foreach (var item in Model)
+	{
+		<div class="col">
+			<div class="card h-100 border-0 shadow-sm text-center">
+				<img src="data:image/*;base64,@(Convert.ToBase64String(item.Image))"
+					 alt="@item.Name"
+					 class="card-img-top p-3"
+					 style="height: 220px; object-fit: contain;" />
+
+				<div class="card-body">
+					<h5 class="card-title mb-2 text-dark">@item.Name</h5>
+					<p class="card-text text-primary fw-bold fs-5">$@item.Price</p>
+				</div>
+
+				<div class="card-footer bg-transparent border-0">
+					<a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info w-100">
+						View Details
+					</a>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+<div class="d-flex justify-content-center mt-4">
+	@Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+			new PagedListRenderOptions
+	{
+		Display = PagedListDisplayMode.IfNeeded,
+		MaximumPageNumbersToDisplay = 5,
+		LinkToPreviousPageFormat = "«",
+		LinkToNextPageFormat = "»",
+		LiElementClasses = new[] { "page-item" },
+		PageClasses = new[] { "page-link" },
+		ActiveLiElementClass = "active",
+	})
+</div>

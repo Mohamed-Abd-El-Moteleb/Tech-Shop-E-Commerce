@@ -1,0 +1,36 @@
+﻿@model List<SpecialTag>
+@{
+	ViewData["Title"] = "Index";
+}
+<br />
+<br />
+<br />
+<div class="row">
+	<div class="col-6">
+		<h2 class="text-info">Special Tags List</h2>
+	</div>
+	<div class="col-6 text-right">
+		<a asp-action="Create" class="btn btn-info"><i class="fa-solid fa-plus"></i> New Special Tag</a>
+	</div>
+
+</div>
+<br />
+<div>
+	<table class="table table-striped border">
+		<tr class="table-info">
+			<th>
+				Special Tag
+			</th>
+			<th></th>
+		</tr>
+		@foreach (var type in Model)
+		{
+			<tr>
+				<td>@type.SpecialTagName</td>
+
+				<partial name="SpecialTagButtons" model="@type.Id" />
+
+			</tr>
+		}
+	</table>
+</div>

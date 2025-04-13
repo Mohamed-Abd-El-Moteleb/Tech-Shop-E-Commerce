@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Shop.Models.ProductTypes>
+@{
+    ViewData["Title"] = "Product Types";
+}
+
+<h2 class="text-center text-info mb-4">Browse Product Types</h2>
+<hr class="mb-4" />
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var type in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0 text-center">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                    <h5 class="card-title mb-3 text-dark">@type.ProductType</h5>
+                    <a class="btn btn-outline-primary"
+                       asp-action="ProductsByType"
+                       asp-route-id="@type.Id">
+                        View Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

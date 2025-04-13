@@ -1,0 +1,14 @@
+﻿@model List<Product>
+
+@foreach (var product in Model)
+{
+	<tr>
+		<td>@product.Name</td>
+		<td>@product.Price</td>
+		<td>@product.ProductColor</td>
+		<td>@(product.IsAvailable ? "Yes" : "No")</td>
+		<td>@product.ProductType?.ProductType</td>
+		<td>@product.SpecialTag?.SpecialTagName</td>
+		<partial name="ProductsButtonPartial" model="@product.Id" />
+	</tr>
+}

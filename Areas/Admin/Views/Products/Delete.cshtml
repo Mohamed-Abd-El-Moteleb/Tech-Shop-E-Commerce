@@ -1,0 +1,39 @@
+﻿@model Shop.Models.Product
+
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<div class="container mt-5">
+    <div class="card mx-auto shadow-sm border-danger" style="max-width: 550px;">
+        <div class="card-header bg-danger text-white text-center">
+            <h4 class="mb-0">Delete Confirmation</h4>
+        </div>
+
+        <div class="card-body text-center">
+            <p class="text-danger mb-4">
+                <strong>Are you sure you want to delete this product?</strong>
+            </p>
+
+            <img src="data:image/*;base64,@(Convert.ToBase64String(Model.Image))"
+                 alt="@Model.Name"
+                 class="img-fluid rounded shadow-sm mb-4"
+                 style="max-height: 250px;" />
+
+            <ul class="list-group list-group-flush text-start mb-3">
+                <li class="list-group-item"><strong>Name:</strong> @Model.Name</li>
+                <li class="list-group-item"><strong>Price:</strong> $@Model.Price</li>
+                <li class="list-group-item"><strong>Color:</strong> @Model.ProductColor</li>
+                <li class="list-group-item"><strong>Available:</strong> @(Model.IsAvailable ? "Yes" : "No")</li>
+                <li class="list-group-item"><strong>Product Type:</strong> @Model.ProductType?.ProductType</li>
+                <li class="list-group-item"><strong>Special Tag:</strong> @Model.SpecialTag?.SpecialTagName</li>
+            </ul>
+
+            <form asp-action="DeleteConfirm" class="d-flex justify-content-center gap-3">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Yes, Delete" class="btn btn-danger px-4" />
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

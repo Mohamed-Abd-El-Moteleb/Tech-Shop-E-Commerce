@@ -1,0 +1,109 @@
+﻿@model List<Shop.Models.Order>
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h2 class="text-primary mb-4">📋 Orders</h2>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Filter Orders</h5>
+        <div class="row g-3 align-items-center">
+            <div class="col-md-3">
+                <label for="searchName" class="form-label">Customer Name</label>
+                <input type="text" id="searchName" class="form-control" placeholder="Customer name..." />
+            </div>
+
+            <div class="col-md-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="text" id="phone" class="form-control" placeholder="Phone..." />
+            </div>
+
+            <div class="col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" class="form-select">
+                    <option value="">All</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="orderDate" class="form-label">Order Date</label>
+                <input type="date" id="orderDate" class="form-control" />
+            </div>
+
+            <div class="col-md-3">
+                <label for="sortOrder" class="form-label">Sort by Date</label>
+                <select id="sortOrder" class="form-select">
+                    <option value="desc">Newest</option>
+                    <option value="asc">Oldest</option>
+                </select>
+            </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-end">
+            <button type="button" class="btn btn-outline-secondary" id="resetFilters">
+                <i class="fa fa-undo me-1"></i> Reset
+            </button>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Order No</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="ordersTableBody">
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderNo</td>
+                <td>@order.Name</td>
+                <td>@order.PhoneNo</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <td>@order.Status</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-primary btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function loadOrders() {
+            $.get('/Admin/Order/FilteredOrders', {
+                name: $('#searchName').val(),
+                phone: $('#phone').val(),          
+                orderDate: $('#orderDate').val(),   
+                status: $('#status').val()
+            }, function (data) {
+                $('#ordersTableBody').html(data);
+            });
+        }
+
+        $('#resetFilters').on('click', function () {
+            $('#searchName, #phone, #orderDate, #status').val('');
+            loadOrders();
+        });
+
+        $('#searchName, #phone, #orderDate, #status').on('change keyup', function () {
+            loadOrders();
+        });
+
+
+    </script>
+}

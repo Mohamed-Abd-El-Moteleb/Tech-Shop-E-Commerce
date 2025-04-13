@@ -1,0 +1,179 @@
+﻿@model List<Product>
+@{
+	ViewData["Title"] = "Index";
+}
+<br />
+<br />
+<br />
+<div class="row">
+	<div class="col-6">
+		<h2 class="text-info">Product Types List</h2>
+	</div>
+	<div class="col-6 text-right">
+		<a asp-action="Create" class="btn btn-info"><i class="fa-solid fa-plus"></i> New Product</a>
+	</div>
+
+</div>
+<div class="card shadow-sm mb-4">
+	<div class="card-body">
+		<h5 class="card-title mb-3">Filter Products</h5>
+		<div class="row g-3 align-items-center">
+			<div class="col-md-3">
+				<label for="search" class="form-label">Search by Name</label>
+				<input type="text" id="search" class="form-control" placeholder="Product name..." />
+			</div>
+
+			<div class="col-md-2">
+				<label for="sortBy" class="form-label">Sort By</label>
+				<select id="sortBy" class="form-select">
+					<option value="">Select</option>
+					<option value="price">Price</option>
+					<option value="name">Name</option>
+					<option value="color">Color</option>
+					<option value="available">Availability</option>
+				</select>
+			</div>
+
+			<div class="col-md-2">
+				<label for="sortOrder" class="form-label">Order</label>
+				<select id="sortOrder" class="form-select">
+					<option value="asc">Ascending</option>
+					<option value="desc">Descending</option>
+				</select>
+			</div>
+
+			<div class="col-md-2">
+				<label for="isAvailable" class="form-label">Availability</label>
+				<select id="isAvailable" class="form-select">
+					<option value="">All</option>
+					<option value="true">Available</option>
+					<option value="false">Not Available</option>
+				</select>
+			</div>
+
+			<div class="col-md-2">
+				<label for="productTypeId" class="form-label">Product Type</label>
+				<select id="productTypeId" class="form-select" asp-items="ViewBag.ProductTypes">
+					<option value="">All Types</option>
+				</select>
+			</div>
+
+			<div class="col-md-2">
+				<label for="specialTagId" class="form-label">Special Tag</label>
+				<select id="specialTagId" class="form-select" asp-items="ViewBag.SpecialTags">
+					<option value="">All Tags</option>
+				</select>
+			</div>
+		</div>
+		<div class="mt-3 d-flex justify-content-end">
+			<button type="button" class="btn btn-outline-secondary" id="resetFilters">
+				<i class="fa fa-undo me-1"></i> Reset Filters
+			</button>
+		</div>
+	</div>
+</div>
+<div class="mb-3 d-flex gap-2">
+	<button id="exportPdf" class="btn btn-danger"><i class="fa fa-file-pdf"></i> Export PDF</button>
+	<button id="exportExcel" class="btn btn-success"><i class="fa fa-file-excel"></i> Export Excel</button>
+</div>
+<br />
+<div id="productsTableContainer">
+	<table id="Products" class="table table-striped border text-center">
+		<thead>
+			<tr class="table-info">
+				<th>Product Name</th>
+				<th>Price</th>
+				<th>Product Color</th>
+				<th>Available</th>
+				<th>Product Type</th>
+				<th>Special Tag</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="productsTableBody">
+			@* Initial product rows rendered here *@
+		</tbody>
+	</table>
+</div>
+@section scripts {
+	<script>
+				
+		function loadProducts() {
+			$.get('@Url.Action("FilteredProducts")', {
+				search: $('#search').val(),
+				sortBy: $('#sortBy').val(),
+				sortOrder: $('#sortOrder').val(),
+				productTypeId: $('#productTypeId').val(),
+				specialTagId: $('#specialTagId').val(),
+				isAvailable: $('#isAvailable').val()
+			}, function (data) {
+				$('#productsTableBody').html(data);
+			});
+
+			
+		}
+		$('#resetFilters').on('click', function () {
+			$('#search').val('');
+			$('#sortBy').val('');
+			$('#sortOrder').val('asc');
+			$('#isAvailable').val('');
+			$('#productTypeId').val('');
+			$('#specialTagId').val('');
+			loadProducts();
+		});
+
+		$('#search, #sortBy, #sortOrder, #productTypeId, #specialTagId, #isAvailable').on('change keyup', function () {
+			loadProducts();
+		});
+
+		$(document).ready(function () {
+			loadProducts();
+		});
+
+	</script>
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+	<script type="text/javascript">
+		$(function () {
+			var saveMessage = '@TempData["Save"]';
+			if (saveMessage) {
+				alertify.success(saveMessage);
+			}
+
+			var editMessage = '@TempData["Edit"]';
+			if (editMessage) {
+				alertify.success(editMessage);
+			}
+
+			var deleteMessage = '@TempData["Delete"]';
+			if (deleteMessage) {
+				alertify.error(deleteMessage);
+			}
+		});
+	</script>
+	<script>
+			
+		document.getElementById('exportPdf').addEventListener('click', function () {
+			const { jsPDF } = window.jspdf;
+			const doc = new jsPDF();
+
+			doc.autoTable({
+				html: '#Products',
+				startY: 20,
+				headStyles: { fillColor: [41, 128, 185] },
+				didDrawPage: function (data) {
+					doc.setFontSize(14);
+					doc.text('Product List', 14, 15);
+				}
+			});
+
+			doc.save('products.pdf');
+		});
+
+		$('#exportExcel').on('click', function () {
+			const table = document.getElementById('Products'); 
+			const wb = XLSX.utils.table_to_book(table, { sheet: "Products" });
+			XLSX.writeFile(wb, "products.xlsx");
+		});
+	</script>
+}

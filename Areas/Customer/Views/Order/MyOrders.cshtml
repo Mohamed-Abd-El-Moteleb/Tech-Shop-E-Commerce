@@ -1,0 +1,42 @@
+﻿@model List<Shop.Models.Order>
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2 class="text-primary mb-4">📦 My Orders</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You have not placed any orders yet.
+    </div>
+}
+else
+{
+    foreach (var order in Model)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between">
+                <div><strong>Order #@order.OrderNo</strong></div>
+                <div>@order.OrderDate.ToShortDateString()</div>
+            </div>
+            <div class="card-body">
+                <p><strong>Items:</strong> @order.OrderDetails.Count</p>
+
+                <p><strong>Address:</strong> @order.Address</p>
+
+                <p><strong>Phone:</strong> @order.PhoneNo</p>
+
+                <ul class="list-group">
+                    @foreach (var detail in order.OrderDetails)
+                    {
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>@detail.Product.Name</span>
+                            <span class="text-muted">$@detail.Product.Price.ToString("0.00")</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+}

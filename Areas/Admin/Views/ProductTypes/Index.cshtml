@@ -1,0 +1,58 @@
+﻿@model List<ProductTypes>
+@{
+	ViewData["Title"] = "Index";
+}
+<br />
+<br />
+<br />
+<div class="row">
+	<div class="col-6">
+		<h2 class="text-info">Product Types List</h2>
+	</div>
+	<div class="col-6 text-right">
+		<a asp-action="Create" class="btn btn-info"><i class="fa-solid fa-plus"></i> New Product Type</a>
+	</div>
+
+</div>
+<br />
+<div>
+	<table class="table table-striped border">
+		<tr class="table-info">
+			<th>
+				Product Type
+			</th>
+			<th></th>
+		</tr>
+		@foreach(var type in Model)
+		{
+			<tr>
+				<td>@type.ProductType</td>
+				
+				<partial name="ButtonPartial" model="@type.Id" />
+				
+			</tr>
+		}
+	</table>
+</div>
+@section scripts {
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+
+	<script type="text/javascript">
+		$(function () {
+			var saveMessage = '@TempData["Save"]';
+			if (saveMessage) {
+				alertify.success(saveMessage);
+			}
+
+			var editMessage = '@TempData["Edit"]';
+			if (editMessage) {
+				alertify.success(editMessage);
+			}
+
+			var deleteMessage = '@TempData["Delete"]';
+			if (deleteMessage) {
+				alertify.error(deleteMessage);
+			}
+		});
+	</script>
+}

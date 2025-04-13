@@ -1,0 +1,38 @@
+﻿@model Shop.ViewModels.VerifyEmailViewModel
+@{
+    ViewData["Title"] = "Verify Email";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white text-center">
+                    <h4>Email Verification</h4>
+                    <p class="mb-0">Please enter your email to continue</p>
+                </div>
+                <div class="card-body">
+                    <form asp-action="VerifyEmail" method="post" novalidate>
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-info text-white">Verify</button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a asp-action="Login" class="text-decoration-none">Back to login</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

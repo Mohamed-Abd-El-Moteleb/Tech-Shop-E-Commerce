@@ -1,0 +1,27 @@
+﻿@model Shop.Models.Order
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>📄 Order Details - @Model.OrderNo</h2>
+
+<p><strong>Customer:</strong> @Model.Name</p>
+<p><strong>Phone:</strong> @Model.PhoneNo</p>
+<p><strong>Address:</strong> @Model.Address</p>
+<p><strong>Date:</strong> @Model.OrderDate</p>
+
+<h4>🛍 Items</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Name</th><th>Price</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderDetails)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>$@item.Product.Price.ToString("0.00")</td>
+            </tr>
+        }
+    </tbody>
+</table>

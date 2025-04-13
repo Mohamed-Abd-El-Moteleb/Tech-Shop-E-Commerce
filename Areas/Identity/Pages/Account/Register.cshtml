@@ -1,0 +1,117 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-dark">Create Account</h2>
+                <p class="text-muted small">Join us and start shopping!</p>
+            </div>
+
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.FirstName" class="form-label">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control form-control-lg" placeholder="First Name" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.LastName" class="form-label">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control form-control-lg" placeholder="Last Name" />
+                        <span asp-validation-for="Input.LastName" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <input asp-for="Input.Email" class="form-control form-control-lg" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.PhoneNumber" class="form-label">Phone Number</label>
+                    <input asp-for="Input.PhoneNumber" class="form-control form-control-lg" placeholder="e.g. 0123-456-7890" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.Address" class="form-label">Address</label>
+                    <input asp-for="Input.Address" class="form-control form-control-lg" placeholder="e.g. 123 Nile Street, Cairo" />
+                    <span asp-validation-for="Input.Address" class="text-danger small"></span>
+                </div>
+                <div class="mb-3 position-relative">
+                    <label asp-for="Input.Password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input asp-for="Input.Password" type="password" id="passwordInput" class="form-control form-control-lg" placeholder="Create password" />
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">Show</button>
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4 position-relative">
+                    <label asp-for="Input.ConfirmPassword" class="form-label">Confirm Password</label>
+                    <div class="input-group">
+                        <input asp-for="Input.ConfirmPassword" type="password" id="confirmPasswordInput" class="form-control form-control-lg" placeholder="Confirm password" />
+                        <button type="button" class="btn btn-outline-secondary" onclick="toggleConfirmPassword()">Show</button>
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                </div>
+
+                <div class="d-grid mb-3">
+                    <button id="registerSubmit" type="submit" class="btn btn-primary btn-lg">Register</button>
+                </div>
+
+                <div class="text-center small">
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="d-block">Already have an account? Login</a>
+                </div>
+            </form>
+
+            @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+            {
+                <div class="text-center mt-4">
+                    <p class="text-muted">Or register with:</p>
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        @foreach (var provider in Model.ExternalLogins!)
+                        {
+                            <button type="submit" class="btn btn-outline-primary me-2" name="provider" value="@provider.Name">@provider.DisplayName</button>
+                        }
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            const btn = event.target;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'Show';
+            }
+        }
+
+        function toggleConfirmPassword() {
+            const input = document.getElementById('confirmPasswordInput');
+            const btn = event.target;
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                btn.textContent = 'Show';
+            }
+        }
+    </script>
+}

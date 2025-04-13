@@ -1,0 +1,33 @@
+﻿@model Shop.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-5">
+    <div class="card mx-auto shadow-sm" style="max-width: 500px;">
+        <div class="card-header text-center bg-primary text-white">
+            <h4 class="mb-0">@Model.Name</h4>
+        </div>
+
+        <div class="card-body text-center">
+            <img src="data:image/*;base64,@(Convert.ToBase64String(Model.Image))"
+                 alt="@Model.Name"
+                 class="img-fluid rounded mb-4"
+                 style="max-height: 250px;" />
+
+            <ul class="list-group list-group-flush text-start">
+                <li class="list-group-item"><strong>Price:</strong> $@Model.Price</li>
+                <li class="list-group-item"><strong>Color:</strong> @Model.ProductColor</li>
+                <li class="list-group-item"><strong>Available:</strong> @(Model.IsAvailable ? "Yes" : "No")</li>
+                <li class="list-group-item"><strong>Product Type:</strong> @Model.ProductType?.ProductType</li>
+                <li class="list-group-item"><strong>Special Tag:</strong> @Model.SpecialTag?.SpecialTagName</li>
+            </ul>
+
+            <div class="mt-4 d-flex justify-content-center gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
